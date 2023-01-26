@@ -5,12 +5,35 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Button, Paper } from '@mui/material'
 import AlertBar from '../components/AlertBar'
+import { useAppContext } from '../context/appContext'
 
 const Register = () => {
-  const [isMember, setIsMember] = useState(false)
-  const handleChange = (e) => {
-    console.log(e.target.value)
+  const initialState = {
+    name: '',
+    email: '',
+    password: '',
+    isMember: false,
   }
+
+  const { isLoading, showAlert, displayAlert } = useAppContext()
+  const [values, setValues] = useState(initialState)
+
+  // Login Function
+
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const { name, email, password, isMember } = values
+    if (!email || !password || (!isMember && !name)) {
+      displayAlert()
+      return
+    }
+    console.log(values)
+  }
+
   return (
     <Box
       sx={{
@@ -38,21 +61,43 @@ const Register = () => {
           Login
         </Typography>
 
-        <AlertBar severity='error' message='Please provide all values' />
-        {isMember ? null : (
-          <FormRow name='name' type='text' handleChange={handleChange} />
+        {showAlert && (
+          <AlertBar
+            alertSeverity='error'
+            alertMsg='Please provide all values'
+          />
         )}
-        <FormRow name='email' type='email' />
-        <FormRow name='password' type='password' />
-        <Button variant='contained' sx={{ mt: 2 }}>
+        {values.isMember ? null : (
+          <FormRow
+            name='name'
+            type='text'
+            value={values.name}
+            handleChange={handleChange}
+          />
+        )}
+        <FormRow
+          name='email'
+          type='email'
+          value={values.email}
+          handleChange={handleChange}
+        />
+        <FormRow
+          name='password'
+          type='password'
+          value={values.password}
+          handleChange={handleChange}
+        />
+        <Button variant='contained' sx={{ mt: 2 }} onClick={handleSubmit}>
           Submit
         </Button>
         <Box sx={{ mt: 1 }}>
           <Typography sx={{ display: 'inline' }}>
-            {isMember ? 'Not a member yet? |' : 'Already a member? |'}
+            {values.isMember ? 'Not a member yet? |' : 'Already a member? |'}
           </Typography>
-          <Button onClick={() => setIsMember(!isMember)}>
-            {isMember ? 'Register' : 'Login'}
+          <Button
+            onClick={() => setValues({ ...values, isMember: !values.isMember })}
+          >
+            {values.isMember ? 'Register' : 'Login'}
           </Button>
         </Box>
       </Card>

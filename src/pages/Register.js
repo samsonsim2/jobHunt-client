@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import { Button, Paper } from '@mui/material'
 import AlertBar from '../components/AlertBar'
 import { useAppContext } from '../context/appContext'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
   const initialState = {
@@ -15,10 +16,17 @@ const Register = () => {
     isMember: false,
   }
 
-  const { isLoading, showAlert, displayAlert } = useAppContext()
+  const {
+    isLoading,
+    showAlert,
+    displayAlert,
+    registerUser,
+    addUserToLocalStorage,
+    loginUser,
+  } = useAppContext()
   const [values, setValues] = useState(initialState)
 
-  // Login Function
+  // Handle form changes functionality
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -31,8 +39,33 @@ const Register = () => {
       displayAlert()
       return
     }
-    console.log(values)
+
+    // Handle register
+
+    const currentUser = { name, email, password }
+
+    if (isMember) {
+      loginUser(currentUser)
+    } else {
+      console.log('registering user')
+      registerUser(currentUser)
+    }
+
+    //degbug
+    // console.log(values)
   }
+
+  //Navigate to dashboard
+  const { user } = useAppContext()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/')
+      }, 3000)
+    }
+  }, [user, navigate])
 
   return (
     <Box
@@ -61,12 +94,7 @@ const Register = () => {
           Login
         </Typography>
 
-        {showAlert && (
-          <AlertBar
-            alertSeverity='error'
-            alertMsg='Please provide all values'
-          />
-        )}
+        {showAlert && <AlertBar />}
         {values.isMember ? null : (
           <FormRow
             name='name'
@@ -87,7 +115,12 @@ const Register = () => {
           value={values.password}
           handleChange={handleChange}
         />
-        <Button variant='contained' sx={{ mt: 2 }} onClick={handleSubmit}>
+        <Button
+          variant='contained'
+          disabled={isLoading}
+          sx={{ mt: 2 }}
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
         <Box sx={{ mt: 1 }}>

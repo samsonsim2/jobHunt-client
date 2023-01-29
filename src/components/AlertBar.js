@@ -5,8 +5,8 @@ import Stack from '@mui/material/Stack'
 import { useAppContext } from '../context/appContext'
 
 const AlertBar = () => {
-  const { alertType, alertMsg } = useAppContext()
-  return <Alert severity={alertType}>{alertMsg}</Alert>
+  const { alertType, alertText } = useAppContext()
+  return <Alert severity={alertType}>{alertText}</Alert>
 }
 
 export default AlertBar

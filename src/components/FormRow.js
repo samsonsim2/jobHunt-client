@@ -1,6 +1,6 @@
 import React from 'react'
 import TextField from '@mui/material/TextField'
-const FormRow = ({ type, name, value, handleChange, formTitle }) => {
+const FormRow = ({ type, name, value, handleChange, formTitle, style }) => {
   return (
     <>
       <TextField
@@ -11,6 +11,7 @@ const FormRow = ({ type, name, value, handleChange, formTitle }) => {
         defaultValue={value}
         margin='normal'
         onChange={handleChange}
+        sx={style ? style : { width: '100%' }}
       />
     </>
   )

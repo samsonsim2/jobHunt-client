@@ -10,45 +10,36 @@ import ContentCut from '@mui/icons-material/ContentCut'
 import ContentCopy from '@mui/icons-material/ContentCopy'
 import ContentPaste from '@mui/icons-material/ContentPaste'
 import Cloud from '@mui/icons-material/Cloud'
+import { Box, Stack } from '@mui/system'
+import links from '../utils/links'
+import { NavLink } from 'react-router-dom'
+import { useAppContext } from '../context/appContext'
 
 const BigSidebar = () => {
+  let normalStyle = {
+    color: '#bdbdbd',
+  }
+  let activeStyle = {
+    color: '#1769aa',
+  }
   return (
     <Paper sx={{ width: 320, height: '100vh', maxWidth: '100%' }}>
       <MenuList>
-        <MenuItem>
-          <ListItemIcon>
-            <ContentCut fontSize='small' />
-          </ListItemIcon>
-          <ListItemText>Cut</ListItemText>
-          <Typography variant='body2' color='text.secondary'>
-            ⌘X
-          </Typography>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <ContentCopy fontSize='small' />
-          </ListItemIcon>
-          <ListItemText>Copy</ListItemText>
-          <Typography variant='body2' color='text.secondary'>
-            ⌘C
-          </Typography>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <ContentPaste fontSize='small' />
-          </ListItemIcon>
-          <ListItemText>Paste</ListItemText>
-          <Typography variant='body2' color='text.secondary'>
-            ⌘V
-          </Typography>
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <Cloud fontSize='small' />
-          </ListItemIcon>
-          <ListItemText>Web Clipboard</ListItemText>
-        </MenuItem>
+        {links.map((item) => {
+          return (
+            <MenuItem key={item.id}>
+              <NavLink
+                to={item.path}
+                style={({ isActive }) => (isActive ? activeStyle : normalStyle)}
+              >
+                <Stack direction='row' spacing={2}>
+                  <Box>{item.icon}</Box>
+                  <Box>{item.text}</Box>
+                </Stack>
+              </NavLink>
+            </MenuItem>
+          )
+        })}
       </MenuList>
     </Paper>
   )

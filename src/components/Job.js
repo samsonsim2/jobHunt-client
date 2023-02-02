@@ -1,6 +1,6 @@
 import { Alert, Button, Card, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import moment from 'moment/moment'
+import moment from 'moment'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAppContext } from '../context/appContext'

@@ -72,7 +72,7 @@ const Profile = () => {
               name='location'
               type='text'
               value={location}
-              handleChange={(e) => setEmail(e.target.value)}
+              handleChange={(e) => setLocation(e.target.value)}
               style={{ width: { xs: '90%', md: '30%' } }}
             />
 

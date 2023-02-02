@@ -8,7 +8,7 @@ const FormRow = ({ type, name, value, handleChange, formTitle, style }) => {
         type={type}
         name={name}
         label={name}
-        defaultValue={value}
+        value={value || ''}
         margin='normal'
         onChange={handleChange}
         sx={style ? style : { width: '100%' }}

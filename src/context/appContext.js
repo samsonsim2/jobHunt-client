@@ -74,7 +74,7 @@ const initialState = {
 // Create Provider
 const AppProvider = ({ children }) => {
   const authFetch = axios.create({
-    baseURL: 'http://localhost:5000/api/v1',
+    baseURL: 'https://job-hunt-server-1ba3.vercel.app/api/v1',
   })
   // request
 

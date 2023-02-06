@@ -28,6 +28,10 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
+  CLEAR_FILTERS,
+  CHANGE_PAGE,
 } from './actions'
 import axios from 'axios'
 
@@ -69,12 +73,27 @@ const initialState = {
   totalJobs: 0,
   page: 1,
   numOfPages: 1,
+
+  //Stats
+  stats: {},
+  monthlyApplications: [],
+
+  //Search
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+}
+
+const clearFilters = () => {
+  console.log('clear filters')
 }
 
 // Create Provider
 const AppProvider = ({ children }) => {
   const authFetch = axios.create({
-    baseURL: 'https://job-hunt-server-1ba3.vercel.app/api/v1',
+    baseURL: 'http://localhost:5000/api/v1',
   })
   // request
 
@@ -268,7 +287,11 @@ const AppProvider = ({ children }) => {
 
   //GET JOBS
   const getJobs = async () => {
-    let url = `\jobs`
+    const { page, search, searchStatus, searchType, sort } = state
+    let url = `\jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+    if (search) {
+      url = url + `&search=${search}`
+    }
     dispatch({ type: GET_JOBS_BEGIN })
 
     try {
@@ -325,6 +348,35 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+  //SHOW STATS
+  const showStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN })
+    console.log('show stats')
+
+    try {
+      const { data } = await authFetch('/jobs/stats')
+
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      })
+    } catch (error) {
+      console.log(error.response)
+    }
+    clearAlert()
+  }
+
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS })
+  }
+  //CHANGE PAGE
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } })
+  }
 
   return (
     <AppContext.Provider
@@ -344,6 +396,9 @@ const AppProvider = ({ children }) => {
         setEditJob,
         deleteJob,
         editJob,
+        showStats,
+        clearFilters,
+        changePage,
       }}
     >
       {children}

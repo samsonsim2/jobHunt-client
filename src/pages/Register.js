@@ -123,6 +123,21 @@ const Register = () => {
         >
           Submit
         </Button>
+        <Button
+          variant='contained'
+          disabled={isLoading}
+          sx={{ mt: 2 }}
+          onClick={() => {
+            const currentUser = {
+              name: 'samson',
+              email: 'samson@gmail.com',
+              password: 'secret123',
+            }
+            loginUser(currentUser)
+          }}
+        >
+          Demo User
+        </Button>
         <Box sx={{ mt: 1 }}>
           <Typography sx={{ display: 'inline' }}>
             {values.isMember ? 'Not a member yet? |' : 'Already a member? |'}

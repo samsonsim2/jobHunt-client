@@ -56,7 +56,10 @@ const SharedLayout = () => {
           </Collapse>
         </Box>
 
-        <Box display={{ xs: 'span', sm: 'block' }} sx={{ width: '100%' }}>
+        <Box
+          display={{ xs: 'span', sm: 'block' }}
+          sx={{ width: '100%', background: '#f5f5f5' }}
+        >
           <NavBar></NavBar>
           <Outlet />
         </Box>

@@ -5,12 +5,24 @@ import React, { useEffect } from 'react'
 import { useAppContext } from '../context/appContext'
 import Job from './Job'
 import Loading from './Loading'
+import PageBtnContainer from './PageBtnContainer'
 
 const JobsContainer = () => {
-  const { getJobs, jobs, isLoading, page, totalJobs } = useAppContext()
+  const {
+    getJobs,
+    jobs,
+    isLoading,
+    page,
+    totalJobs,
+    search,
+    searchStatus,
+    searchType,
+    sort,
+    numOfPages,
+  } = useAppContext()
   useEffect(() => {
     getJobs()
-  }, [])
+  }, [search, searchStatus, searchType, sort, page])
 
   if (isLoading) {
     return <Loading />
@@ -35,16 +47,23 @@ const JobsContainer = () => {
   }
   return (
     <>
-      <Box sx={{ p: 5 }}>
-        <Typography variant='h5' sx={{ fontWeight: 500 }}>
+      <Box
+        sx={{
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignContent: 'center',
+        }}
+      >
+        <Typography variant='h5' sx={{ fontWeight: 500, mb: 2 }}>
           {totalJobs} job{jobs.length > 1 && 's'}
         </Typography>
         <Box
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
-
             flexWrap: 'wrap',
+            justifyContent: 'center',
             gap: 2,
           }}
         >
@@ -52,6 +71,7 @@ const JobsContainer = () => {
             return <Job key={job._id} {...job} />
           })}
         </Box>
+        {numOfPages > 1 && <PageBtnContainer />}
       </Box>
     </>
   )
